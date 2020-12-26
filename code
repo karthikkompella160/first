@@ -1,0 +1,320 @@
+import os
+import platform
+
+def clrsc():
+   if platform.system() == 'Windows':
+      os.system('cls')
+   else:
+      os.system('clear')
+def yum():
+    os.system("dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y")
+def docker():
+    if platform.system() == 'Windows':
+      import pyttsx3 as p
+    else:
+       class p:
+           def speak(string):
+               os.system("espeak-ng -s 90  '{}'".format(string))
+    p.speak("Welcome to Docker menu")
+    os.system("systemctl start docker")
+    while True:
+        print("""
+1.To install docker community edition
+2.To see the manual of the docker command
+3.To stop docker service
+4.To see the list of running containers
+5.To see the list of all containers including the stopped ones
+6.To list the images available
+7.To Run a container with the specified image
+8.To login into the specific container
+9.To download a specific image to the local system
+10.To remove a container permanently ( all the data will be lost )
+11.To stop a running container ( data will be saved )
+12.To remove an image locally
+13.To remove all containers
+x.To exit\n
+          """)
+
+        choice = input("Enter choice  ")
+        if choice == '1':
+            os.system("yum install docker-ce --nobest -y")
+        elif choice == 'x':
+            break
+        elif choice == '2':
+            os.system("man docker")
+        elif choice == '3':
+            os.system("systemctl stop docker")
+            print("Docker stopped")
+        elif choice == '4':
+            os.system("docker ps")
+        elif choice == '5':
+            os.system("docker ps -a")
+        elif choice == '6':
+            os.system("docker images")
+        elif choice == '7':
+            img=input("Enter the os-name(centos, ubantu, fedora, httpd, etc.) to launch a container  ")
+            print(os.system("docker container run -it {}".format(img)))
+        elif choice == '8':
+        
+            name=input("Enter the container name to login into the container ")
+            os.system("docker start {}".format(name))
+            print(os.system("docker attach {}".format(name)))
+        elif choice == '9':
+            img_name=input("Enter the name of image you want download to your local system ")
+            os.system("docker pull {}".format(img_name))
+        elif choice == "10":
+            name=input("Enter the container name or id  to remove the container ")
+            os.system("docker rm -f {}".format(name))
+        elif choice == "11":
+            name=input("Enter the container name to stop/logout  ")
+            os.system("docker container stop {}".format(name))
+        elif choice == "12":
+            img_name=input("Enter image name to remove it locally ")
+            os.system("docker rmi {}".format(img_name))
+        elif choice == "13":
+            os.system("docker rm -f `docker ps -a -q`")
+            print("All containers removed successfully")
+        else :
+            print("not supported")
+def awscli():
+    
+   if platform.system() == 'Windows':
+      import pyttsx3 as p
+   else:
+       class p:
+           def speak(string):
+               os.system("espeak-ng -s 90 '{}'".format(string))
+
+   p.speak("WELCOME TO A W S ASSISTANT")
+   input("press enter to proceed...............")
+   p.speak("AWS CONFIGUIRED...................")
+
+   input("Press enter to login ......")
+   while True:
+      print("\n")
+      print("""\t\t\t\t\t1 : Create Key-pair
+\t\t\t\t\t2 : Create Security group
+\t\t\t\t\t3 : Launch an EC2 instance
+\t\t\t\t\t4 : Create an EBS Volume
+\t\t\t\t\t5 : start instances 
+\t\t\t\t\t6 : stop instances
+\t\t\t\t\t7 : show available instances
+  """)
+      p.speak("""\t\t\t\t\t1 : Create Key-pair
+\t\t\t\t\t2 : Create Security group
+\t\t\t\t\t3 : Launch an EC2 instance
+\t\t\t\t\t4 : Create an EBS Volume
+\t\t\t\t\t5 : start instances 
+\t\t\t\t\t6 : stop instances
+\t\t\t\t\t7 : show available instances 
+
+
+        """)
+
+
+      option=int(input("selct your option : "))
+      if option==1:
+         keyname=input("Enter key-pair name ")
+         keycmd = " aws ec2 create-key-pair --key-name "+ keyname 
+         os.system(keycmd)
+         p.speak("Key-pair generated")
+         p.speak("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         status=input("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         if status== 'E' or status=='e':
+            break
+      if option==2:
+         sgname=input("Enter security group name ")
+         sgdes=input("Enter description ")
+         sgcmd= "aws ec2 create-security-group " +  "--description " + sgdes + " --group-name " + sgname
+         os.system(sgcmd)
+         p.speak("security group created")
+         p.speak("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         status=input("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         if status== 'E' or status=='e':
+            break
+      if option==3:
+         p.speak(" WELCOME TO AWS - EC2 SERVICE ")
+         input("press Enter to 'show' Available Images :  ")
+         p.speak("""1. Amazon Linux -  ami-0e306788ff2473ccb \n 2. Red Hat Enterprise Linux 8 - ami-052c08d70def0ac62 \n 3. Ubuntu Server 20.04 LTS -   ami-0cda377a1b884a1bc """)
+         imageid= input("Enter ami :  ")
+         p.speak("Enter the instance type ")
+         typedata="""1. t2.micro\n 2. t2.nano\n 3. t2.small  """
+         p.speak(typedata)
+         instype=input(" type option : ")
+         sgid=input("Enter security id : ")
+         count=input("Enter how many instances you want to launch ")
+         keyname= input("Enter key-pair name : ")
+         cmd= "aws ec2 run-instances --image-id  " + imageid +" --key-name " + keyname+ "  --security-group-ids  "+ sgid + "   --count  "+ count + "  --instance-type  " + instype
+         os.system(cmd)
+         p.speak("instance launched")
+         p.speak("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         status=input("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         if status== 'E' or status=='e':
+            break
+      if option ==4:
+         p.speak(" WELCOME TO AWS-EBS SERVICE ")
+         p.speak("""\t\t\t\t\t\t1. us-east-2a
+\t\t\t\t\t\t2. us-east-1a
+\t\t\t\t\t\t3. us-west-1a
+\t\t\t\t\t\t4. ap-south-1a
+\t\t\t\t\t\t5. ap-northeast-1a
+ """)
+         print("""\t\t\t\t\t\t1. us-east-2a
+\t\t\t\t\t\t2. us-east-1a
+\t\t\t\t\t\t3. us-west-1a
+\t\t\t\t\t\t4. ap-south-1a
+\t\t\t\t\t\t5. ap-northeast-1a
+ """)
+         zone=input(" Enter availability zone : ")
+         size=input(" Enter size of volume : ")
+         cmd = "aws ec2 create-volume  --availability-zone  " + zone + " --size  " + size 
+         os.system(cmd)
+         p.speak("volume created ")
+         p.speak("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         print()
+         status=input("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         if status== 'E' or status=='e':
+            break
+      if option==5:
+         p.speak("Enter instance name to start : ")
+         instancename=input("Enter instance name : ")
+         cmd = "aws ec2 start-instances  --instance-ids  " + instancename 
+         os.system(cmd)
+         print()
+         p.speak("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         status=input("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         if status== 'E' or status=='e':
+            break
+      if option==6:
+         p.speak("Enter instance name to stop : ")
+         instancename=input("Enter instance name : ")
+         cmd = "aws ec2 stop-instances  --instance-ids  " + instancename 
+         os.system(cmd)
+         print()
+         p.speak("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         status=input("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         if status== 'E' or status=='e':
+            break
+      if option==7:
+         p.speak("please wait i am getting the  data ")
+         cmd ="aws ec2 describe-instances"
+         os.system(cmd)
+         print()
+         p.speak("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         status=input("\t\t\t\t\tPress E to exit or  Press enter to explore services : ")
+         if status== 'E' or status=='e':
+            break
+      else:
+         print("Please enter the value with in range  : ")
+         p.speak("Please enter the value with in range  : ")
+   input("Press C to clear  : ")
+   os.system("cls")
+def lvm():
+    if platform.system() == 'Windows':
+      import pyttsx3 as p
+    else:
+       class p:
+           def speak(string):
+               os.system("espeak-ng -s 90 '{}'".format(string))
+
+    p.speak("\t\t\t\t\tWelcome to L V M \n")
+    print("---------------------------------------------------------------------------")
+    print("Here you can create LVM storage")
+    p.speak("Here you can create LVM storage")
+    input("Press enter to continue ....")
+    p.speak(""" ATTACH YOUR HARD DISKS""")
+    p.speak("if you attached press Enter to continue .....")
+    input("if you attached press Enter to continue .....")
+    print("----------------------------------------------------------------------------")
+    p.speak("LVM AUTOMATOR is starting")
+    input("Press Enter to list available hard disks")
+    os.system("fdisk -l")
+    c,pi=0,0
+    names=[]
+    while True:
+    
+        disk=input("\nchoose disks: ")
+        names.append(disk)
+        input("press enter to Enter into create physical volume process..... ")
+        while c>=pi:
+            p.speak("formatting.....")
+            os.system("pvcreate {}".format(disk))
+            i=input("press E to exit or Enter to add more disks")
+            if(i=='e' or  i=='E'):
+                break
+        c=c+1
+        os.system("pvdisplay")
+   
+        input("press Enter to start Volume grouping......")
+        break
+
+    while True:
+        print("volume grouping started..........")
+        folder=input("Enter the disk name or folder name : ")
+   
+        os.system("vgcreate {} {} ".format(folder,names[0]))
+        input("press enter to display the volume group : ")
+        os.system("vgdisplay ")
+        print("Entering into logical volume zone ...........")
+        part=input("enter the name of partition : ")
+        size=input("Enter the size of the block : ")
+        os.system("lvcreate --size {} --name {} {}".format(size,part,folder))
+        input("Press enter to show details of created storage")
+        os.system("lvdisplay")
+        input("press f to start formatting : ")
+    
+        print("formatting the storage........")
+        os.system("mkfs.ext4 /dev/{}/{}  ".format(folder,part))
+    
+        directory=input("Enter directory name .... : ")
+        os.system("mkdir /{}".format(directory))
+        os.system("mount /dev/{}/{} /{}".format(folder,part,directory))
+        input("press 's' to show the disk details : ")
+        os.system("df -h")
+        i=input("press E to exit or enter to re-vist ")
+        if(i=='e' or  i=='E'):
+            break
+
+
+
+
+
+
+
+
+while True:
+   clrsc()
+   print("Hello! user choose your tool\n") 
+   print("\t1. AWS") 
+   print("\t2. Docker") 
+   print("\t3. Yum Confiuration") 
+   print("\t4. LVM")
+   print("\tq. Quit") 
+   print("Enter your Option:-",end=' ') 
+     
+   # take input from user 
+   a = input()
+
+   # check conditions
+   if "1" in a :
+      awscli()
+   elif "2" in a :
+      docker()
+   elif "3" in a :
+      yum()
+   elif "4" in a :
+      lvm()
+   elif "q" in a :
+      if platform.system() == 'Windows':
+         import pyttsx3 as p
+      else:
+       class p:
+           def speak(string):
+               os.system("espeak-ng  -s 90 '{}'".format(string))
+
+      p.speak("Thank you")
+     
+      break
+   else:
+      print("Option not supported")
+    
